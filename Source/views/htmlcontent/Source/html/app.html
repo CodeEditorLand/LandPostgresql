@@ -1,0 +1,133 @@
+<div class="fullsize vertBox">
+	<div
+		(click)="resultActive = !resultActive"
+		[class.collapsed]="!resultActive"
+		*ngIf="dataSets.length > 0"
+		class="boxRow header collapsible"
+		id="resultspane">
+		<span> {{Constants.resultPaneLabel}} </span>
+		<span class="shortCut"> {{resultShortcut}} </span>
+	</div>
+	<div
+		(onScroll)="onScroll($event)"
+		[class.hidden]="!resultActive"
+		[scrollEnabled]="scrollEnabled"
+		*ngIf="renderedDataSets.length > 0"
+		class="results vertBox scrollable"
+		id="results">
+		<div
+			[style.max-height]="dataSet.maxHeight"
+			[style.min-height]="dataSet.minHeight"
+			*ngFor="let dataSet of renderedDataSets; let i = index"
+			class="boxRow content horzBox slickgrid">
+			<slick-grid
+				(contextMenu)="openContextMenu($event, dataSet.batchId, dataSet.resultId, i)"
+				(mousedown)="navigateToGrid(i)"
+				[columnDefinitions]="dataSet.columnDefinitions"
+				[dataRows]="dataSet.dataRows"
+				[ngClass]="i === activeGrid ? 'active' : ''"
+				[plugins]="slickgridPlugins"
+				[resized]="dataSet.resized"
+				[selectionModel]="selectionModel"
+				#slickgrid
+				class="boxCol content vertBox slickgrid"
+				enableAsyncPostRender="true"
+				id="slickgrid_{{i}}"
+				showDataTypeIcon="false"
+				showHeader="true">
+			</slick-grid>
+			<span class="boxCol content vertBox">
+				<div
+					*ngFor="let icon of dataIcons"
+					class="boxRow content maxHeight">
+					<div *ngIf="icon.showCondition()" class="gridIcon">
+						<a
+							(click)="icon.functionality(dataSet.batchId, dataSet.resultId, i)"
+							[ngClass]="icon.icon()"
+							[title]="icon.hoverText()"
+							class="icon"
+							href="#">
+						</a>
+					</div>
+				</div>
+			</span>
+		</div>
+	</div>
+	<context-menu
+		(clickEvent)="handleContextClick($event)"
+		#contextmenu></context-menu>
+	<msg-context-menu
+		(clickEvent)="handleMessagesContextClick($event)"
+		#messagescontextmenu></msg-context-menu>
+	<div
+		(click)="messageActive = !messageActive"
+		[class.collapsed]="!messageActive"
+		class="boxRow header collapsible"
+		id="messagepane"
+		style="position: relative">
+		<div class="resizableHandle" id="messageResizeHandle"></div>
+		<span> {{Constants.messagePaneLabel}} </span>
+		<span class="shortCut"> {{messageShortcut}} </span>
+	</div>
+	<div
+		(contextmenu)="openMessagesContextMenu($event)"
+		[class.hidden]="!messageActive && dataSets.length !== 0"
+		class="scrollable messages"
+		id="messages">
+		<br />
+		<table id="messageTable">
+			<colgroup>
+				<col class="wide" span="1" />
+			</colgroup>
+			<tbody>
+				<template [ngForOf]="messages" let-message ngFor>
+					<tr class="messageRow">
+						<td>
+							<span *ngIf="!Utils.isNumber(message.batchId)"
+								>[{{message.time}}]</span
+							>
+						</td>
+						<td
+							[class.batchMessage]="Utils.isNumber(message.batchId)"
+							[class.errorMessage]="message.isError"
+							class="messageValue">
+							{{message.message}}
+							<a
+								(click)="sendGetRequest(message.link.uri)"
+								*ngIf="message.link"
+								href="#"
+								>{{message.link.text}}</a
+							>
+						</td>
+					</tr>
+				</template>
+				<tr *ngIf="!complete" id="executionSpinner">
+					<td>
+						<span *ngIf="messages.length === 0"
+							>[{{startString}}]</span
+						>
+					</td>
+					<td>
+						<img
+							height="18px"
+							src="dist/images/progress_36x_animation.gif" />
+						<span style="vertical-align: bottom"
+							>{{Constants.executeQueryLabel}}</span
+						>
+					</td>
+				</tr>
+				<tr *ngIf="complete">
+					<td></td>
+					<td>
+						{{Utils.formatString(Constants.elapsedTimeLabel,
+						totalElapsedTimeSpan)}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div
+		[class.hidden]="!resizing"
+		[style.top]="resizeHandleTop"
+		id="resizeHandle"></div>
+</div>

@@ -1,0 +1,123 @@
+import { NotificationType } from "vscode-languageclient";
+import { Telemetry } from "../telemetry";
+
+// ------------------------------- < IntelliSense Ready Event > ------------------------------------
+
+/**
+ * Event sent when the language service is finished updating after a connection
+ */
+export namespace IntelliSenseReadyNotification {
+	export const type = new NotificationType<IntelliSenseReadyParams, void>(
+		"textDocument/intelliSenseReady"
+	);
+}
+
+/**
+ * Update event parameters
+ */
+export class IntelliSenseReadyParams {
+	/**
+	 * URI identifying the text document
+	 */
+	public ownerUri: string;
+}
+
+/**
+ * Notification sent when the an IntelliSense cache invalidation is requested
+ */
+export namespace RebuildIntelliSenseNotification {
+	export const type = new NotificationType<RebuildIntelliSenseParams, void>(
+		"textDocument/rebuildIntelliSense"
+	);
+}
+
+/**
+ * Rebuild IntelliSense notification parameters
+ */
+export class RebuildIntelliSenseParams {
+	/**
+	 * URI identifying the text document
+	 */
+	public ownerUri: string;
+}
+
+// ------------------------------- </ IntelliSense Ready Event > ----------------------------------
+// ------------------------------- < Telemetry Sent Event > ------------------------------------
+
+/**
+ * Event sent when the language service send a telemetry event
+ */
+export namespace TelemetryNotification {
+	export const type = new NotificationType<TelemetryParams, void>(
+		"telemetry/sqlevent"
+	);
+}
+
+/**
+ * Update event parameters
+ */
+export class TelemetryParams {
+	public params: {
+		eventName: string;
+		properties: Telemetry.ITelemetryEventProperties;
+		measures: Telemetry.ITelemetryEventMeasures;
+	};
+}
+
+// ------------------------------- </ Telemetry Sent Event > ----------------------------------
+// ------------------------------- < Status Event > ------------------------------------
+
+/**
+ * Event sent when the language service send a status change event
+ */
+export namespace StatusChangedNotification {
+	export const type = new NotificationType<StatusChangeParams, void>(
+		"textDocument/statusChanged"
+	);
+}
+
+/**
+ * Update event parameters
+ */
+export class StatusChangeParams {
+	/**
+	 * URI identifying the text document
+	 */
+	public ownerUri: string;
+
+	/**
+	 * The new status of the document
+	 */
+	public status: string;
+}
+
+// ------------------------------- </ Status Sent Event > ----------------------------------
+
+// ------------------------------- < Language Flavor Changed Event > ------------------------------------
+/**
+ * Language flavor change event parameters
+ */
+export class DidChangeLanguageFlavorParams {
+	/**
+	 * URI identifying the text document
+	 */
+	public uri: string;
+	/**
+	 * text document's language
+	 */
+	public language: string;
+	/**
+	 * Sub-flavor for the langauge, e.g. 'PGSQL' for a SQL Server connection or 'Other' for any other SQL flavor
+	 */
+	public flavor: string;
+}
+
+/**
+ * Notification sent when the language flavor is changed
+ */
+export namespace LanguageFlavorChangedNotification {
+	export const type = new NotificationType<
+		DidChangeLanguageFlavorParams,
+		void
+	>("connection/languageflavorchanged");
+}

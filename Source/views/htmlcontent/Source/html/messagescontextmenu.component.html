@@ -1,0 +1,16 @@
+<ul
+	[class.hidden]="!visible"
+	[style.left]="position.x"
+	[style.top]="position.y"
+	class="contextMenu"
+	style="position: absolute">
+	<li
+		(click)="handleContextActionClick('copySelection')"
+		[class.disabled]="isDisabled"
+		id="copy">
+		{{ Constants.copyLabel }}
+		<span style="float: right; color: lightgrey; padding-left: 10px">{{
+			keys["event.copySelection"]
+		}}</span>
+	</li>
+</ul>

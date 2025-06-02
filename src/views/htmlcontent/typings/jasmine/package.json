@@ -6,7 +6,7 @@
         "scope": "@types",
         "escapedName": "@types%2fjasmine",
         "name": "@types/jasmine",
-        "rawSpec": "^2.5.36",
+        "rawSpec": "2.5.36",
         "spec": ">=2.5.36 <3.0.0",
         "type": "range"
       },
@@ -32,7 +32,7 @@
     "scope": "@types",
     "escapedName": "@types%2fjasmine",
     "name": "@types/jasmine",
-    "rawSpec": "^2.5.36",
+    "rawSpec": "2.5.36",
     "spec": ">=2.5.36 <3.0.0",
     "type": "range"
   },
