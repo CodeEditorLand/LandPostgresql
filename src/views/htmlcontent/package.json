@@ -15,7 +15,7 @@
     "angular-in-memory-web-api": "~0.20.0",
     "angular2-slickgrid": "github:microsoft/angular2-slickgrid#1.4.7",
     "copy-paste": "^2.1.1",
-    "core-js": "^3.42.0",
+    "core-js": "^3.43.0",
     "jasmine-core": "~5.8.0",
     "moment": "^2.30.1",
     "rangy": "^1.3.2",
